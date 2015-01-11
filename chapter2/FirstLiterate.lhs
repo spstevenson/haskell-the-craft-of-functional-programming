@@ -31,3 +31,13 @@ An example using double, square and size
 
 >	example :: Int
 >	example = double(size - square(2+2))
+
+The function for task 4 that doubles the input and squares the result
+
+>	squareDouble :: Int -> Int
+>	squareDouble n = square (double n)
+
+The function for task 4 that squares the input and doubles the result
+
+>	doubleSquare :: Int -> Int
+>	doubleSquare n = double (square n)
