@@ -52,3 +52,17 @@ checkerBoardEightByEight :: Picture
 checkerBoardEightByEight = above (sideBySide checkerBoardFourByFour checkerBoardFourByFour) (sideBySide checkerBoardFourByFour checkerBoardFourByFour)
 
 -- Exercise 2.4 Producing the three variants of the horse pictures
+
+variant1 :: Picture
+variant1 = above (sideBySide horse blackHorse) (sideBySide blackHorse horse)
+
+variant2 :: Picture
+variant2 = above (sideBySide horse blackHorse) (sideBySide (flipV blackHorse) (flipV horse))
+
+variant3 :: Picture
+variant3 = above (sideBySide horse blackHorse) (sideBySide (rotate blackHorse) (rotate horse))
+
+-- Exercise 2.5 Producing a fourth variant1
+
+variant4 :: Picture
+variant4 = above (sideBySide horse blackHorse) (sideBySide (flipH blackHorse) (flipH horse))
