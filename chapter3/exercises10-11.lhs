@@ -28,10 +28,10 @@ which calculate the minimum of two and three integers, respectively.
 
 > min :: Int -> Int -> Int
 > min x y 
->  | x <= y = x
+>  | x <= y    = x
 >  | otherwise = y
 
 > minThree :: Int -> Int -> Int -> Int
 > minThree x y z
 >  | (min x y) <= z = (min x y)
->  | otherwise = z
+>  | otherwise      = z

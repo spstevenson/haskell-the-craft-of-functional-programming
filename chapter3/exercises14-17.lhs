@@ -31,9 +31,15 @@ the degenerate casem there are three sub-cases:
 
 > howManyAboveAverage :: Int -> Int -> Int -> Int
 > howManyAboveAverage x y z
->  | fromIntegral x > (averageThree x y z) && fromIntegral y > (averageThree x y z) = 2
->  | fromIntegral x > (averageThree x y z) && fromIntegral z > (averageThree x y z) = 2
->  | fromIntegral y > (averageThree x y z) && fromIntegral z > (averageThree x y z) = 2
+>  | fromIntegral x > (averageThree x y z) 
+>    && fromIntegral y > (averageThree x y z) 
+		= 2
+>  | fromIntegral x > (averageThree x y z) 
+>    && fromIntegral z > (averageThree x y z) 
+>    	= 2
+>  | fromIntegral y > (averageThree x y z) 
+>    && fromIntegral z > (averageThree x y z) 
+>    	= 2
 >  | otherwise = 1
 
 3.15 Write a function
@@ -45,9 +51,9 @@ roots the equation has. You may assume the equation is non-degenerate.
 
 > numberNDroots :: Float -> Float -> Float -> Int
 > numberNDroots a b c
->  | b^2 > 4.0*a*c = 2
+>  | b^2 > 4.0*a*c  = 2
 >  | b^2 == 4.0*a*c = 1
->  | b^2 < 4.0*a*c = 0
+>  | b^2 < 4.0*a*c  = 0
 
 3.16 Using your answer to the last question, write a function
 
@@ -59,10 +65,10 @@ should return the result 3.
 
 > numberRoots :: Float -> Float -> Float -> Int
 > numberRoots a b c
->  | a /= 0.0 = numberNDroots a b c
->  | b /= 0.0 = 1
+>  | a /= 0.0             = numberNDroots a b c
+>  | b /= 0.0             = 1
 >  | b == 0.0 && c /= 0.0 = 0
->  | otherwise = 3
+>  | otherwise            = 3
 
 3.17 The formula for the roots of a quadratic is
 
@@ -80,9 +86,13 @@ as the result of each of the functions.
 > largerRoot :: Float -> Float -> Float -> Float
 
 > smallerRoot a b c
->  | (numberRoots a b c) > 0 && (numberRoots a b c) < 3 = ((-b) - (sqrt (b^2-4.0*a*c)))/(2.0*a)
+>  | (numberRoots a b c) > 0 
+>  | && (numberRoots a b c) < 3 
+>    	= ((-b) - (sqrt (b^2-4.0*a*c)))/(2.0*a)
 >  | otherwise = 0.0
 
 > largerRoot a b c
->  | numberRoots a b c > 0 && numberRoots a b c < 3 = ((-b) + (sqrt (b^2-4.0*a*c)))/(2.0*a)
+>  | numberRoots a b c > 0 
+>    && numberRoots a b c < 3 
+>    	= ((-b) + (sqrt (b^2-4.0*a*c)))/(2.0*a)
 >  | otherwise = 0.0

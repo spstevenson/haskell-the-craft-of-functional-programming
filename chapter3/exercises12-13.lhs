@@ -9,8 +9,10 @@ returns unchanged characters which are not small letters.
 
 > toUpper :: Char -> Char
 > toUpper x
->  | (ord x) >= (ord 'a') && (ord x) <= (ord 'z') = (chr ((ord x) + offset))
->  | otherwise = x
+>  | (ord x) >= (ord 'a') 
+>    && (ord x) <= (ord 'z') 
+>				= (chr ((ord x) + offset))
+>  | otherwise  = x
 
 3.13 Define the function
 
@@ -25,4 +27,4 @@ taken to be 0.
 > charToNum :: Char -> Int
 > charToNum ch
 >  | isDigit ch = ord ch - ord '0'
->  | otherwise = 0
+>  | otherwise  = 0
