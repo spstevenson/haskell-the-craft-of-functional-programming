@@ -35,13 +35,7 @@ rotate = flipH . flipV
 rotateHorse :: Picture
 rotateHorse = rotate horse
 
--- For exercise 2.2 we could define a black rectangle by superimposing
--- a horse against a black horse
-
---black :: Picture
---black = superimpose horse blackHorse
-
--- For exercise 2.3 two different ways of achieving the picture are as follows
+-- For exercise 2.2 two different ways of achieving the picture are as follows
 
 checkerBoardTwoByTwo :: Picture
 checkerBoardTwoByTwo = above (beside white black) (beside black white)
