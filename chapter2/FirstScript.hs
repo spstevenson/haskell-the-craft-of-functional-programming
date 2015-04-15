@@ -11,23 +11,25 @@
 		
 ############################################################-}
 
+module FirstScript where
+
 --	The value size is an Integer (Int), defined to be
 --  the sum of twelve and thirteen.
 
-size :: Int
+size :: Integer
 size = 12 + 13
 
 --	The function to square an integer.
 
-square :: Int -> Int
+square :: Integer -> Integer
 square n = n*n
 
 -- The function to double an integer.
 
-double :: Int -> Int
+double :: Integer -> Integer
 double n = 2*n
 
 --	An example using double, square and size.
 
-example :: Int
+example :: Integer
 example = double (size - square (2+2))
