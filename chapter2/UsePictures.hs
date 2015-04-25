@@ -43,14 +43,6 @@ checkerBoardTwoByTwo = above (beside white black) (beside black white)
 checkerBoardTwoByTwoMethod2 :: Picture
 checkerBoardTwoByTwoMethod2 = beside (above white black) (above black white)
 
--- From these 2 by 2 potions we can make 4 by 4 and finally 8 by 8
-
-checkerBoardFourByFour :: Picture
-checkerBoardFourByFour = above (beside checkerBoardTwoByTwo checkerBoardTwoByTwo) (beside checkerBoardTwoByTwo checkerBoardTwoByTwo)
-
-checkerBoardEightByEight :: Picture
-checkerBoardEightByEight = above (beside checkerBoardFourByFour checkerBoardFourByFour) (beside checkerBoardFourByFour checkerBoardFourByFour)
-
 -- Exercise 2.4 Producing the three variants of the horse pictures
 
 variant1 :: Picture
