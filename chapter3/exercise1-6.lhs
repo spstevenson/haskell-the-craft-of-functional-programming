@@ -56,6 +56,27 @@ your definitions.
 nAnd True True
 nAnd True False
 
+nAnd True True
+not ( a && b )
+not ( True && b ) 		- From a
+not ( True && True ) 	- From b
+not True
+False
+
+nAnd True False
+not (a && b)
+not (True && b)			- From a
+not (True && False)		- From b
+not (False)
+True
+
+nAnd2 True True
+False
+
+nAnd2 True False
+a False
+True
+
 for each of your definitions of nAnd in the previous exercise.
 
 3.7 Write QuickCheck properties to test the functions you have written in the earlier exercises. You might
@@ -67,3 +88,6 @@ your functions.
 
 > prop_deMorgans :: Bool -> Bool -> Bool
 > prop_deMorgans x y = not x && not y == not (x || y)
+
+> prop_nAnd :: Bool -> Bool -> Bool
+> prop_nAnd x y = nAnd x y == not (x && y)
