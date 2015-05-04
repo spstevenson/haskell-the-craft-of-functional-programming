@@ -31,8 +31,16 @@ it will have the value "VII" and so on.
 
 > romanDigit :: Char -> String
 > romanDigit ch 
->  | isInOffsetRange ((charToNum ch) - 10) = "Around 9"
->  | isInOffsetRange ((charToNum ch) - 5) = "Around 5"
->  | otherwise = "Between O and 3"
+>  | isInOffsetRange ((charToNum ch) - 10) = attachSuffixPostfix "X" ((charToNum ch) - 10)
+>  | isInOffsetRange ((charToNum ch) - 5) = attachSuffixPostfix "V" ((charToNum ch) - 5)
+>  | otherwise = attachSuffixPostfix "" (charToNum ch)
 
-> addCharactersToRomanNumerals :: String -> Int -> String
+> attachSuffixPostfix :: String -> Int -> String
+> attachSuffixPostfix ch offset
+>  | offset >= 0 = ch ++ getDigitSuffixPostfix offset
+>  | offset < 0 = getDigitSuffixPostfix offset ++ ch
+
+> getDigitSuffixPostfix :: Int -> String
+> getDigitSuffixPostfix x
+>  | abs x > 0 = "I" ++ getDigitSuffixPostfix ((abs x) - 1)
+>  | otherwise = ""
