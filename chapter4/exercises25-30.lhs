@@ -104,3 +104,33 @@ white square with both diagonals coloured black.
 >   diagonalSize = n `div` 2
 >   halfEvenDiagonal = diagonal diagonalSize `beside` flipH (diagonal diagonalSize)
 >   halfOddDiagonal = diagonal diagonalSize `above` whiteSquares diagonalSize `above` flipV (diagonal diagonalSize)
+
+4.30 Can you give a direct recursive function
+
+chessBoard :: Integer -> Picture
+
+so that
+
+chessBoard n = ... chessBoard (n-1) ...
+
+Hint: you might want to use sone of the functions defined here, or variants
+of them, in writing your definitions.
+
+> vWhiteBlack :: Integer -> Picture 
+
+> vWhiteBlack n
+>  | n <= 1 = white
+>  | otherwise = white `above` vBlackWhite (n-1)
+
+> vBlackWhite :: Integer -> Picture
+
+> vBlackWhite n
+>  | n <= 1 = black
+>  | otherwise = black `above` vWhiteBlack (n-1)
+
+> chessBoard :: Integer -> Picture
+
+> chessBoard n
+>  | n <= 1 = black
+>  | n `rem` 2 == 0 = whiteBlack n `above` (chessBoard (n-1) `beside` vWhiteBlack (n-1))
+>  | otherwise = blackWhite n `above` (chessBoard (n-1) `beside` vWhiteBlack(n-1))
