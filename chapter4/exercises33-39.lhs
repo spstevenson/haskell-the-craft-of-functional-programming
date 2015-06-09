@@ -58,3 +58,47 @@ We could also check each combination for two the same.
 
 allDifferent 1 0 1
 allDifferent 0 1 1
+
+4.36 Test the following function
+
+> attempt :: Integer -> Integer -> Integer -> Bool
+> attempt m n p = (m/=n) && (n/=p)
+
+using the test data written in the previous question. What do you conclude from your results?
+
+> testAttempt1 = TestCase (assertEqual "for: attempt 0 0 0" False (attempt 0 0 0))
+> testAttempt2 = TestCase (assertEqual "for: attempt 0 1 2" True (attempt 0 1 2))
+> testAttempt3 = TestCase (assertEqual "for: attempt 1 1 0" False (attempt 1 1 0))
+> testAttempt4 = TestCase (assertEqual "for: attempt 1 0 1" False (attempt 1 0 1))
+> testAttempt5 = TestCase (assertEqual "for: attempt 0 1 1" False (attempt 0 1 1))
+
+> testAttempt = TestList [testAttempt1, testAttempt2, testAttempt3, testAttempt4, testAttempt5]
+
+The test case attempt 1 0 1 return True instead of false so we know the provided function
+is incorrect.
+
+4.37 Devise test data for a function 
+
+howManyAboveAverage :: Integer -> Integer -> Integer -> Integer
+
+which returns how many of its three integer inputs are above their average value.
+
+Firstly the case where they are all the same
+
+howManyAboveAverage 0 0 0 
+
+we should get zero back from this as none are above the average. The rest of the cases can
+be divided into when 2 or 1 value is above the average and the permutations of the input 
+parameters these values can take.
+
+2 above the average
+
+howManyAboveAverage 100 100 1
+howManyAboveAverage 100 1 100
+howmanyAboveAverage 1 100 100
+
+1 above the average
+
+howManyAboveAverage 100 1 1
+howManyAboveAverage 1 100 1
+howManyAboveAverage 1 1 100
