@@ -1,4 +1,5 @@
 > import Test.HUnit
+> import Test.QuickCheck
 
 4.33 Devise test data for a function
 
@@ -102,3 +103,80 @@ howmanyAboveAverage 1 100 100
 howManyAboveAverage 100 1 1
 howManyAboveAverage 1 100 1
 howManyAboveAverage 1 1 100
+
+4.38 Devise test data for a function to raise two to a positive integer power.
+
+The first value to test would be one, as the first integer this is a boundary value
+between valid and invalid input and would be useful to test.
+
+positivePowerOfTwo 1 -> Should equal 2
+
+The next value we could check would be a standard value, say 64 as this is 
+a common power of two used in computing
+
+positivePowerOfTwo 64 -> Should equals 1.8446744e+19
+
+Finally if our function purports to work with any positive integer, we should test
+with a very large input that gives a very large output.
+
+positivePowerOfTwo 1000 -> Should equal 1.071509e+301
+
+4.39 Repeat these exercises to define QuickCheck properties which can be used to test
+these functions.
+
+The first property is that allEqual should never equal allDifferent.
+
+> prop_notAllEqualAndAllDifferent :: Integer -> Integer -> Integer -> Bool
+
+> prop_notAllEqualAndAllDifferent m n p = not (solution m n p && attempt m n p)
+
+The result of allEqual and allDifferent should be the same whatever order the parameters
+are in.
+
+> prop_allEqualIsCommutative :: Integer -> Integer -> Integer -> Bool
+> prop_allEqualIsCommutative m n p = (solution m n p) == (solution p m n) && (solution m n p) == (solution n p m)
+
+> prop_allDifferentIsCommutative :: Integer -> Integer -> Integer -> Bool
+> prop_allDifferentIsCommutative m n p = (attempt m n p) == (attempt p m n) && (attempt m n p) == (attempt n p m)
+
+We have already defined quick check properties for howManyAboveAverage in exercise 3.21
+
+> averageThree :: Integer -> Integer -> Integer -> Float
+> averageThree x y z = fromIntegral (x + y + z) / 3.0
+
+> boolToInt :: Bool -> Integer
+> boolToInt True = 1
+> boolToInt False = 0
+
+> howManyAboveAverage :: Integer -> Integer -> Integer -> Integer
+
+> howManyAboveAverage x y z =
+>  boolToInt (fromIntegral x > averageThree x y z) +
+>  boolToInt (fromIntegral y > averageThree x y z) +
+>  boolToInt (fromIntegral z > averageThree x y z)
+
+> prop_lessThanThree :: Integer -> Integer -> Integer -> Bool
+> prop_lessThanThree x y z = howManyAboveAverage x y z < 3
+
+> prop_greaterThanZero :: Integer -> Integer -> Integer -> Bool
+> prop_greaterThanZero x y z 
+>  = howManyAboveAverage x y z > 0 || (x == y && x == z)
+
+With powers of two, n+1 should be double n.
+
+Need to figure out how to define input ranges in quick test so we can avoid quick check using 0.
+
+
+> prop_double :: Integer -> Bool
+> prop_double n 
+>  | n == 0 = True
+>  | otherwise = recursivePower (abs n+1) == 2 * (recursivePower (abs n))
+
+> recursivePower :: Integer -> Integer
+
+> recursivePower n
+>  | n == 1 = 2
+>  | n `rem` 2 == 0 = recursivePower m * recursivePower m
+>  | n `rem` 2 == 1 = recursivePower m * recursivePower m * 2
+>   where
+>   m = n `div` 2
