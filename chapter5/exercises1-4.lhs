@@ -67,4 +67,88 @@ to the function.
 5.4 Design test data for the preceding exercises; explain your choices you
 have made in each case. Give a sample evaluation of each of your functions.
 
+For maxOccurs we should test the case where first is the maximum, the second
+is the maximum and where both are the maximum. We could also check that the
+function handles negative numbers.
 
+maxOccurs (-1) 10 -> (10, 1)
+maxOccurs 10 (-1) -> (10, 1)
+maxOccurs 10 10 -> (10,2)
+
+maxOccurs (-1) 10
+= (max (-1) 10, occurs)
+| where
+|  occurs = 1 (because (-1) /= 10)
+(max (-1) 10, 1)
+(10, 1)
+
+We can follow the same principle with maxThree occurs. We need to test all
+the cases where the maximum occurs once, twice or three times.
+
+Three times
+
+maxThreeOccurs 12 12 12 -> (12, 3)
+
+Twice
+
+maxThreeOccurs 12 12 (-1) -> (12, 2)
+maxThreeOccurs 12 (-1) 12 -> (12, 2)
+maxThreeOccurs (-1) 12 12 -> (12, 2)
+
+Once
+
+maxThreeOccurs 12 1 (-1) -> (12, 1)
+maxThreeOccurs 1 12 1 -> (12, 1)
+maxThreeOccurs 1 1 12 -> (12, 1)
+
+maxThreeOccurs 12 12 (-1)
+= (maxValue, occurs)
+| where
+|  maxValue = max 12 (max 12 (-1)) = max 12 12 = 12
+|  occurs =  (boolToInt (maxValue == m)) + (boolToInt (maxValue == n))
+|           + (boolToInt (maxValue == p)) = (boolToInt (12 == 12) + (boolToInt (12 == 12) + (boolToInt (12 == (-1))) 
+|         = (boolToInt True) + (boolToInt True) + (boolToInt False) = 1 + 1 + 0 = 2
+
+(12, 2)
+
+For orderTriple we need to have test data that is in each possible order, we also need to check if the function
+can sort input where integers are repeated.
+
+orderTriple (1, 2, 3) -> (1, 2, 3)
+orderTriple (2, 1, 3) -> (1, 2, 3)
+orderTriple (2, 3, 1) -> (1, 2, 3)
+orderTriple (1, 3, 2) -> (1, 2, 3)
+orderTriple (3, 1, 2) -> (1, 2, 3)
+orderTriple (3, 2, 1) -> (1, 2, 3)
+
+Where two elements are repeated
+
+orderTriple (1, 1, 0) -> (0, 1, 1)
+orderTriple (1, 0, 1) -> (0, 1, 1)
+orderTriple (0, 1, 1) -> (0, 1, 1)
+
+All elements are repeated
+
+orderTriple (0, 0, 0) -> (0, 0, 0)
+
+orderTriple (2, 3, 1)
+= (minThree 2 3 1, middleThree 2 3 1, maxThree 2 3 1)
+(1, middleThree 2 3 1, maxThree 2 3 1)
+(1, 2, maxThree 2 3 1)
+(1, 2, 3)
+
+With xIntercept, we need to check that the function works with both valid and invalid input.
+
+Inputs with no solutions
+
+xIntercept 0.0 1.0 -> (0.0, False)
+xIntercept 0.0 (-1.0) -> (0.0, False)
+
+Inputs with solutions
+
+xIntercept 1.0 1.0 -> (-1.0, True)
+xIntercept 2.0 (-2.0) -> (2.0, True)
+
+xIntercept 1.0 1.0
+=  ((-1.0)/1.0, True) (As m /= 1.0)
+= (-1.0, True)
