@@ -27,7 +27,7 @@ functions isRound, area and perimeter to include triangles.
 > data ShapeExtended = Circle2 Float |
 > 	               Rectangle2 Float Float |
 >                      Triangle Float Float Float 
->    		       deriving (Eq, Ord, Show)
+>    		       deriving (Ord, Show)
 
 > perimeterExtended :: ShapeExtended -> Float
 > perimeterExtended (Circle2 r) = 2*r*r
@@ -56,3 +56,47 @@ regular.
 > isRegularShape (Circle2 _)  = True
 > isRegularShape (Rectangle2 h w) = h == w
 > isRegularShape (Triangle a b c) = a == b && b == c
+
+5.9 Investigate the derived definitions for Move and Shape: what form do the
+show functions take, for example?
+
+> showShape :: ShapeExtended -> String
+> showShape shape = show shape
+
+> eqShape :: ShapeExtended -> ShapeExtended -> Bool
+> eqShape shape1 shape2 = shape1 == shape2
+
+> greatestShape :: ShapeExtended -> ShapeExtended -> ShapeExtended
+> greatestShape shape1 shape2 = max shape1 shape2
+
+The standard show function is of the form "(Constructor param1 ... param_n)"
+
+The Eq function allows you to use ==
+
+The ord function defines > and <
+
+5.10 Define an == function over Shape so that all circles of negative radius
+are equated. How would you treat rectangles with negative sides?
+
+> instance Eq ShapeExtended where
+>  (==) (Circle2 r1) (Circle2 r2) 
+>   | r1 < 0 && r2 < 0 = True
+>   | otherwise = r1 == r2
+>  (==) (Rectangle2 h1 w1) (Rectangle2 h2 w2)
+>   | (h1 < 0 || w1 < 0) && (h2 < 0 || w2 < 0) = True
+>   | otherwise = (h1 == h2) && (w1 == w2)
+>  (==) (Triangle a1 b1 c1) (Triangle a2 b2 c2)
+>   | anyNeg (Triangle a1 b2 c1) && anyNeg (Triangle a2 b2 c2) = True
+>   | otherwise = (a1 == a2) && (b1 == b2) && (c1 == c2)
+>   where
+>    anyNeg (Triangle a b c ) = a < 0 || b < 0 || c < 0
+>  (==) _ _ = False
+>  (/=) x y = not (x == y)
+
+Here an invalid rectangle (with any side negative) is equal to any other
+invalid rectangle (which has one or more negative sides).
+
+5.11 The type shape takes no account of the position or orientation of a
+shape. After deciding how to represent points, how would you modify the
+original definition of Shape to contain the centre of each object? You
+can assume that rectangles lie with their sides parallel to the axes.
