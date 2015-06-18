@@ -100,3 +100,22 @@ invalid rectangle (which has one or more negative sides).
 shape. After deciding how to represent points, how would you modify the
 original definition of Shape to contain the centre of each object? You
 can assume that rectangles lie with their sides parallel to the axes.
+
+> type Point = (Float, Float)
+
+> data NewShape = NewCircle Float Point |
+>		NewRectangle Float Float Point |
+>		NewTriangle Float Float Float Point
+>		deriving (Eq, Ord, Show)
+
+5.12 Calling the new shape type NewShape, define a function
+
+move :: Float -> Float -> NewShape -> NewShape
+
+which moves a shape by the offsets given
+
+> move :: Float -> Float -> NewShape -> NewShape
+> move offsetX offsetY (NewCircle r (x, y)) = (NewCircle r (x + offsetX, y + offsetY))
+> move offsetX offsetY (NewRectangle h w (x, y)) = (NewRectangle h w (x + offsetX, y + offsetY))
+> move offsetX offsetY (NewTriangle a b c (x, y)) = (NewTriangle a b c (x + offsetX, y + offsetY))
+ 
