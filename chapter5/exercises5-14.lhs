@@ -140,3 +140,17 @@ which moves a shape by the offsets given
 >  where
 >  boundedHorizontally = x2-(w/2.0) < x1 && x1 < x2+(w/2.0)
 >  boundedVertically = y2-(h/2.0) < y1 && y1 < y2+(h/2.0)
+
+5.14 Some houses have a number; others have a name. How would you implement the
+type of 'strings or numbers' used as part of an address? Write a function
+which gives the textual form of one of these objects. Give a definition of a
+type of names and addresses using the type you have defined.
+
+> data HouseName = NumericName Int |
+>			AlphanumericName String
+>			deriving (Show, Eq, Ord)			
+
+> type Street = String
+> type City = String
+> type PostCode = String
+> type Address = (HouseName, Street, City, PostCode)
