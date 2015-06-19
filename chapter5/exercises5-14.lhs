@@ -104,8 +104,7 @@ can assume that rectangles lie with their sides parallel to the axes.
 > type Point = (Float, Float)
 
 > data NewShape = NewCircle Float Point |
->		NewRectangle Float Float Point |
->		NewTriangle Float Float Float Point
+>		NewRectangle Float Float Point 
 >		deriving (Eq, Ord, Show)
 
 5.12 Calling the new shape type NewShape, define a function
@@ -117,5 +116,27 @@ which moves a shape by the offsets given
 > move :: Float -> Float -> NewShape -> NewShape
 > move offsetX offsetY (NewCircle r (x, y)) = (NewCircle r (x + offsetX, y + offsetY))
 > move offsetX offsetY (NewRectangle h w (x, y)) = (NewRectangle h w (x + offsetX, y + offsetY))
-> move offsetX offsetY (NewTriangle a b c (x, y)) = (NewTriangle a b c (x + offsetX, y + offsetY))
- 
+
+5.13 Define a function to test whether two NewShapes overlap
+
+> horizontalDistance :: Point -> Point -> Float
+> horizontalDistance (x1,y1) (x2,y2)  = abs (x1 - x2)
+
+> verticalDistance :: Point -> Point -> Float
+> verticalDistance (x1,y1) (x2,y2) = abs(y1 - y2)
+
+> intersects :: NewShape -> NewShape -> Bool
+> intersects (NewCircle r1 (x1, y1)) ( NewCircle r2 (x2, y2)) = (r1 + r2) > distance
+>  where
+>  distance = sqrt ((y1 - y2)^2 + (x1 - x2)^2)
+> intersects (NewRectangle w1 h1 (x1, y1)) (NewRectangle w2 h2 (x2,y2)) 
+>  = (w1+w2)/2.0 > horizontalDistance (x1,y1) (x2,y2) && (h1+h2)/2.0 > verticalDistance (x1,y1) (x2,y2)
+
+> intersects (NewCircle r (x1,y1)) (NewRectangle w h (x2,y2))
+>  | boundedHorizontally && boundedVertically = True
+>  | boundedVertically = w/2.0 + r > horizontalDistance (x1,y1) (x2,y2)
+>  | boundedHorizontally = h/2.0 + r > verticalDistance (x1,y1) (x2,y2)
+>  | otherwise = w/2.0 + r > horizontalDistance (x1,y1) (x2,y2) && h/2.0 + r > verticalDistance (x1,y1) (x2,y2)
+>  where
+>  boundedHorizontally = x2-(w/2.0) < x1 && x1 < x2+(w/2.0)
+>  boundedVertically = y2-(h/2.0) < y1 && y1 < y2+(h/2.0)
