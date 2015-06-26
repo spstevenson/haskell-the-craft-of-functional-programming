@@ -1,3 +1,4 @@
+> import Prelude hiding (elem)
 > import Data.Char
 
 5.18 Give a definition of the function
@@ -47,3 +48,68 @@ False if its input is not a positive integer).
 
 > divisors :: Integer -> [Integer]
 > divisors n = ([ x | x <- [1..n], n `rem` x == 0])
+
+> isPrime :: Integer -> Bool
+> isPrime n = divisors n == [1,n]
+
+5.21 Define the function
+
+matches :: Integer -> [Integer] -> [Integer]
+
+which picks out occurences of an integer n in a list.
+For instance,
+
+matches 1 [1,2,1,4,5,1] -> [1,1,1]
+matches 1 [2,3,4,6]  -> []
+
+Using matches or otherwise, define a function
+
+elem :: Integer  -> [Integer] -> Bool
+
+which is True if the Integer is an element of the list,
+and False otherwise. For the examples above, we have
+
+elem 1 [1,2,1,4,5,1] -> True
+elem 1 [2,3,4,6] -> False
+
+Since elem is a prelude function, it must be hidden.
+
+> matches :: Integer -> [Integer] -> [Integer]
+> matches elem list = ([x | x <- list, elem == x])
+
+> elem :: Integer -> [Integer] -> Bool
+> elem n list = matches n list /= []
+
+5.22 Define a function
+
+onSeparateLines :: [String] -> String
+
+which takes a list of strings and returns a single
+string which when printed shows the strings on separate
+lines.
+
+> onSeparateLines :: [String] -> String
+> onSeparateLines lines = concat [x ++ ['\n'] | x <- lines]
+
+5.23 Give a function
+
+duplicate :: String -> Integer -> String
+
+which takes a string and an integer, n. The result is n copies
+of the string joined together. If n is less than or equal
+to 0, the result should be the empty string, "", and if
+n is 1, the result will be the string itself.
+
+> duplicate :: String -> Integer -> String
+> duplicate str n
+>  | n < 1 = ""
+>  | n == 1 = str
+>  | otherwise = str ++ (duplicate str (n-1))
+
+5.24 Give a function
+
+pushRight :: String -> String
+
+which takes a string and forms a string length lineLength
+by putting spaces at the front of the string. If lineLength
+were 12 then pushRight "crocodile" would 
