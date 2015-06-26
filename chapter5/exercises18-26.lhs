@@ -22,7 +22,28 @@ capitalizeLetters :: String -> String
 which behaves in the same way except that all
 non-letters are removed from the list?
 
-> capitalise :: Char -> Char
-> capitalise ch
->  | isLower ch = ch
->  | otherwise = ch
+> capitaliseLetters :: String -> String
+> capitaliseLetters letters = ([toUpper x | x <- letters])
+
+> capitaliseAndRemove :: String -> String
+> capitaliseAndRemove letters= ([toUpper x | x <- letters, isLetter x])
+
+5.20 Define the function
+
+divisors :: Integer -> [Integer]
+
+which returns the list of divisors of a positive integer (and the empty)
+list for other inputs). For instance,
+
+divisors 12 -> [1,2,3,4,6,12]
+
+A prime number is a number whose only divisors are 1 and n. Using
+divisors or otherwise define a function
+
+isPrime :: Integer -> Bool
+
+which checks whether or not a positive integer is prime (and returns
+False if its input is not a positive integer).
+
+> divisors :: Integer -> [Integer]
+> divisors n = ([ x | x <- [1..n], n `rem` x == 0])
