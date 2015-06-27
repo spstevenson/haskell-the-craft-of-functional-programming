@@ -112,4 +112,52 @@ pushRight :: String -> String
 
 which takes a string and forms a string length lineLength
 by putting spaces at the front of the string. If lineLength
-were 12 then pushRight "crocodile" would 
+were 12 then pushRight "crocodile" would become "   crocodile".
+How would you make linelength a parameter of this function?
+
+> pushRight :: String -> Integer-> String
+> pushRight str linelength
+>  | toInteger (length str) == linelength = str
+>  | otherwise = " " ++ (pushRight str (linelength-1))
+
+5.25 Can you criticize the way the previous function is specified?
+Look for a case in which it is not defined what it should do - it
+is an exceptional case.
+
+The previous function is not defined when the length of the string
+is greater than linelength.
+
+Define a function
+
+fibTable :: Integer -> String
+
+which produces a table of fiboncci numbers. For instance, the effect
+of putStr (fibTable 6) should be
+
+n	fib n
+0           0
+1           1
+2           1
+3           2
+4           3
+5           5
+6           8
+
+> padRight :: String -> Integer -> String
+> padRight str linelength
+>  | toInteger (length str) == linelength = str
+>  | otherwise = (padRight str (linelength-1)) ++ " "
+
+> columnSize :: Integer
+> columnSize = 12
+
+> fibTable :: Integer -> String
+> fibTable n 
+>  | n < 0 = (pushRight "n" columnSize) ++ (pushRight "fib n" columnSize) ++ "\n"
+>  | otherwise = fibTable (n-1) ++ (pushRight (show n) columnSize) ++ (pushRight (show (fib n)) columnSize) ++ "\n"
+
+> fib :: Integer -> Integer
+> fib n
+>  | n == 0 = 0
+>  | n == 1 = 1
+>  | otherwise = (fib (n-1)) + (fib (n-2))
