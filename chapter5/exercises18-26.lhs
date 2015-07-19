@@ -127,7 +127,7 @@ is an exceptional case.
 The previous function is not defined when the length of the string
 is greater than linelength.
 
-Define a function
+5.26 Define a function
 
 fibTable :: Integer -> String
 
