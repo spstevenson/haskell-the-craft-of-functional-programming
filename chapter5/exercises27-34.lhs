@@ -19,4 +19,17 @@
 > returnLoan dBase pers bk
 >  = [pair | pair <- dBase, pair /= (pers,bk)]
 
-5.27 Go through the calculation
+5.27 Go through the calculation of
+
+books exampleBase "Charlie"
+books exampleBase "Rory"
+
+
+
+5.28 Define the functions borrowers, borrowed and numBorrowed. To
+define numBorrowed you will probably need the length function which
+returns the length of a list.
+
+> borrowers :: Database -> Book -> [Person]
+> borrowers dBase findBook = [pers | (pers, book) <- dBase, book == findBook]
+
