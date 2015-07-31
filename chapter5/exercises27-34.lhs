@@ -64,3 +64,40 @@ pair =			("Alice","Asterix")	("Anna","Little Women")	("Alice","Asterix")	("Rory"
 ("Alice",
 "Little Women")		T			T			T			T
 pair =			("Alice","Asterix")	("Anna","Little Women")	("Alice","Asterix")	("Rory","Tintin")
+
+5.30 How would you have to modify the database if you had used the type
+
+data Loan = Loan Person Book
+
+to model individual loans, rather than the tuple type?
+
+> data Loan = Loan Person Book
+> 	deriving (Show, Eq, Ord)
+
+> type LoanDatabase = [Loan]
+
+> getBook :: Loan -> Book
+> getBook (Loan _ book) = book
+
+> getPerson :: Loan -> Person
+> getPerson (Loan person _) = person
+
+> exampleLoanDatabase :: LoanDatabase
+> exampleLoanDatabase = [Loan "Alice" "Tintin", Loan "Anna" "Little Women", Loan "Alice" "Asterix", Loan "Rory" "Tintin"]
+
+> loanBooks :: LoanDatabase -> Person -> [Book]
+> loanBooks db findPers = [getBook loan | loan <- db, findPers == getPerson loan]
+
+> loanBorrowers :: LoanDatabase -> Book -> [Person]
+> loanBorrowers db findBook = [getPerson loan | loan <- db, getBook loan == findBook]
+
+5.31 How would you express this as a QuickCheck property:
+
+	"Suppose that a particular bk is not loaned to a pers. Now make a
+	random loan of bk2 to pers2. bk should not be loaned to pers."
+
+Would you expect this property to hold? If so, why? If not, why not, and how
+would you modify it so it does hold?
+
+> prop_notAddedNotLoaned :: Book -> Person -> Bool
+> prop_notAddedNotLoaned bk pers = (makeLoan [] pers bk)
