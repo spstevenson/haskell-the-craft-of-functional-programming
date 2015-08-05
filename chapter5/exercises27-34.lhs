@@ -1,3 +1,5 @@
+> import Test.QuickCheck
+
 > type Person = String
 > type Book = String
 
@@ -100,4 +102,18 @@ Would you expect this property to hold? If so, why? If not, why not, and how
 would you modify it so it does hold?
 
 > prop_notAddedNotLoaned :: Book -> Person -> Bool
-> prop_notAddedNotLoaned bk pers = (makeLoan [] pers bk)
+> prop_notAddedNotLoaned bk pers = notElem "bk" (books (makeLoan [] pers bk) "pers")
+
+This would hold unless the bk == bk2 and pers == pers2, the property could be modified
+as follows.
+
+> prop_notAddedNotLoaned2 :: Book -> Person -> Bool
+> prop_notAddedNotLoaned2 bk2 pers2
+>  | bk == bk2 || pers == pers2 = True
+>  | otherwise = notElem bk (books (makeLoan [] pers2 bk2) pers)
+>  where
+>   bk = "Rick"
+>   pers = "Moby Dick" 
+
+5.32 Discuss how you would implement the database functions had you used the representation
+[(Person, [Book])] rather than [(Person, Book)] for the database.
