@@ -1,9 +1,10 @@
-> import Test.QuickCheck
+import Test.QuickCheck
 
 > type Person = String
 > type Book = String
+> type Record = (Person, Book)
 
-> type Database = [(Person, Book)]
+> type Database = [Record]
 
 > exampleBase :: Database
 > exampleBase
@@ -117,3 +118,30 @@ as follows.
 
 5.32 Discuss how you would implement the database functions had you used the representation
 [(Person, [Book])] rather than [(Person, Book)] for the database.
+
+If this representation was used we would have to write a function to find the person from the
+list first, and then modify the list of books for that person. When a person doesn't exist,
+we would have to create the tuple with an empty list and then start adding books. Likewise,
+when removing books we would have to check if the books list is now empty and remove the
+(Person, [Book]) tuple.
+
+When getting the lists of all Person we could do a list comprehension that extracts the
+all the Persons into a list. When getting a list of all the Books we would have to extract
+all the lists of books with a list comprehension and concatenate all these lists.
+
+5.33 How would the tests for the database have to be modified to work with the implementation
+defined in the previous question? Would the QuickCheck properties have to be modified: if so,
+how? If not, why not?
+ 
+We would not have to modify the tests too much. The properties of the function should remain
+the same, but the database parameter will have to change if it explicitly defined as the function
+uses a different database representation. The property that we defined in 5.31 would not have
+to change.
+
+5.34 Define functions to give more readable output from the database operations of this section.
+
+> showEntry :: (Person, Book) -> String
+> showEntry (pers, bk) = "Borrower: " ++ pers ++ ", Book: " ++ bk ++ "\n"
+
+> showDatabase :: Database -> String
+> showDatabase db = concat [showEntry entry | entry <- db]
