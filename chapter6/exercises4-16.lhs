@@ -1,4 +1,5 @@
-> import Pictures hiding (superimpose, printPicture)
+> import Pictures hiding (superimpose, printPicture, prop_AboveFlipH)
+> import Test.QuickCheck
 
 6.4 Define a function
 
@@ -78,7 +79,10 @@ elements in each of the lines of the original picture, reflected in a
 horizontal mirror.
 
 > rotate90 :: Picture -> Picture
-> rotate90 pic = [rotateLine n pic | n <- [0.. (pictureWidth pic) - 1]]
+> rotate90 pic 
+>  | length pic == 0 = pic
+>  | pictureWidth pic == 0 = pic
+>  | otherwise = [rotateLine n pic | n <- [0.. (pictureWidth pic) - 1]]
 
 > rotateLine :: Int -> Picture -> [Char]
 > rotateLine col pic = reverse [ line !! col | line <- pic]
@@ -124,3 +128,56 @@ an empty picture.
 
 > stretchPictureHorizontally :: Picture -> Int -> Picture
 > stretchPictureHorizontally pic scale = [stretchLineHorizontally line scale | line <- pic]
+
+6.11 Correct the property prop_AboveFlipH given earlier.
+
+> prop_AboveFlipH :: Picture -> Picture -> Bool
+> prop_AboveFlipH pic1 pic2 =
+>     flipH (pic1 `above` pic2) == (flipH pic2) `above` (flipH pic1)
+
+6.12 Define properties which describe how beside interacts with flipH and flipV.
+
+> prop_BesideFlipV :: Picture -> Picture -> Bool
+> prop_BesideFlipV pic1 pic2 =
+>    flipV (pic1 `beside` pic2) == flipV pic2 `beside` flipV pic1
+
+> prop_BesideFlipH :: Picture -> Picture -> Property
+> prop_BesideFlipH pic1 pic2 =
+>    (length pic1 == length pic2) 
+>       ==> flipH (pic1 `beside` pic2) == ((flipH pic1) `beside` (flipH pic2))
+
+6.13 One property we can show holds is that if we take the same picture and put
+four copies of it together using beside and above in the two different ways, then
+the results are the same. Express this as a quickCheck property.
+
+> prop_aboveBesides :: Picture -> Bool
+> prop_aboveBesides pic = 
+>   (pic `above` pic) `beside` (pic `above` pic) == (pic `beside` pic) `above` (pic `beside` pic)
+
+6.14 You can test your implementation of rotate90 using QuickCheck. Can you think of properties which
+only use rotate90 and others that use rotate? You may want to impose the condition that any picture
+involved is rectangular: the function is given in the program code for this chapter.
+
+> prop_rotate360 :: Picture -> Property
+> prop_rotate360 pic =
+>  (rectangular pic && (length pic) > 0)
+>    ==> rotate90 (rotate90 (rotate90 (rotate90 pic))) == pic
+
+6.15 What property would you expect invertColour to have? Can you be sure that this would hold for
+randomly generated data?
+
+I would expect a picture that is passed through invertColour twice to be equal to the original picture.
+This would not hold for randomly generated data as the randomly generated data is not limited to the "." and
+"#" pixels.
+
+6.16 [Harder] Write the analogue of propAboveBeside3Correct where two pictures are again used, but
+with two the same at te top (call them n) and two the same at the bottom (s, say). Do you need the condition
+in this case?
+
+> propBesideAbove3Correct :: Picture -> Picture -> Bool
+> propBesideAbove3Correct n s =
+>  (n `beside` n) `above` (s `beside` s)
+>  ==
+>  (n `above` s) `beside` (n `above` s)
+
+In this case, it appears we do not need the condition.
