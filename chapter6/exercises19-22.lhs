@@ -66,3 +66,27 @@ First we need to define our new picture
 
 > getRow :: Picture -> Int -> [Char]
 > getRow pic n = [column !! n | column <- pic]
+
+6.22 It would be possible to represent a Picture as a single list of characters,
+with '\n' terminating each line of the picture, as in
+
+".##.\n.#.#\n.###\n####\n"
+
+How would you redefine the picture manipulating functions over this representation? Which functions
+become easier to define? Which more difficult?
+
+We would have to use list indexes to reference and manipulate the elements in the list of characters.
+If we had to deal with ragged pictures much of our logic would become much more involved. However,
+if we only had to deal with non ragged images we could take advantage of the fact that each of the
+lines are of equal length.
+
+The superimposeLine function would have exactly the same implementation but the superimpose function
+would have to be redefined to split the list by the "\n" characters and form a new picture from the
+results. The printPicture function would be easier to implement as we can just print the list of characters.
+
+The rotate90 function would be a littly trickier to implement. Assuming we are dealing with a non-ragged
+picture, we would need to find the number of rows and the row length. Then we pick out the ith element of
+each line (which we can get by taking multiples of the line length until we reach the end of the character
+list). The scale function is a little trickier to implement, we would begin by repeating every non-newline
+element. Then we would have to duplicate each line, so we would have to somehow insert a copy of each line
+between it and the next line.
