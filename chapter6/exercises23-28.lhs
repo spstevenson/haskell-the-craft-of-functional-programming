@@ -100,3 +100,15 @@ For the function rotate90, we must be able to get characters at certain indexes
 
 > scale :: Picture -> Int -> Picture
 > scale pic n = stretchPictureVertically (stretchPictureHorizontally pic n) n 
+
+> flipH :: Picture -> Picture
+> flipH pic = [reverse line | line <- pic]
+
+> flipV :: Picture -> Picture
+> flipV pic = reverse pic
+
+> above :: Picture -> Picture -> Picture
+> above pic1 pic2 = pic1 ++ pic2
+
+> beside :: Picture -> Picture -> Picture
+> beside pic1 pic2 = [line1 ++ line2| (line1, line2) <- zip pic1 pic2]
