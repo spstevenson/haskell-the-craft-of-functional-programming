@@ -220,9 +220,38 @@ type.
 
 Firstly we would need to define our type
 
-> type CompactedPicture = (Int, [(Int, Char)])
+> type CompactedPicture = (Int, [CharElements])
+> type CharElements = (Int, Char)
+
+> testCompactedPic :: CompactedPicture
+> testCompactedPic = (4, [(5, '#'), (2,'.'), (2, '#'), (2, '.'), (5, '#')] )
 
 Then we need a print function for this representation 
 
+> lineLength :: CompactedPicture -> Int
+> lineLength (a, _) = a
+
+> picData :: CompactedPicture -> [(Int, Char)]
+> picData (_,b) = b
+
+> getPicChar :: CharElements -> Char
+> getPicChar (_,b) = b
+
+> getNum :: CharElements -> Int
+> getNum (a,_) = a
+
+> firstElement :: CompactedPicture -> CharElements
+> firstElement pic  = (head (picData pic))
+
 > printCompactedPicture :: CompactedPicture -> IO ()
-> printPicture picture = putStr (concat [(expandLine line) ++ "\n" | line <- picture])
+> printCompactedPicture picture = putStr (expandCompactedPicture picture (lineLength picture))
+
+> removeFirstChar :: CompactedPicture -> CompactedPicture
+> removeFirstChar pic = (lineLength pic, [((getNum (firstElement pic)) - 1, getPicChar (firstElement pic))] ++ tail (picData pic))
+
+> expandCompactedPicture :: CompactedPicture -> Int -> String
+> expandCompactedPicture pic lineLeft
+>  | picData pic == [] = ""
+>  | lineLeft == 0 = "\n" ++ expandCompactedPicture pic (lineLength pic)
+>  | getNum (firstElement pic) == 0 = expandCompactedPicture (lineLength pic, (tail (picData pic))) lineLeft
+>  | otherwise = getPicChar (firstElement pic) : expandCompactedPicture (removeFirstChar pic) (lineLeft-1)
