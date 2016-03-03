@@ -226,6 +226,9 @@ Firstly we would need to define our type
 > testCompactedPic :: CompactedPicture
 > testCompactedPic = (4, [(5, '#'), (2,'.'), (2, '#'), (2, '.'), (5, '#')] )
 
+> inverseCompactedPic :: CompactedPicture
+> inverseCompactedPic = (4, [(5,'.'), (2,'#'),(2,'.'),(2,'#'),(5,'.')])
+
 Then we need a print function for this representation 
 
 > lineLength :: CompactedPicture -> Int
@@ -247,7 +250,22 @@ Then we need a print function for this representation
 > printCompactedPicture picture = putStr (expandCompactedPicture picture (lineLength picture))
 
 > removeFirstChar :: CompactedPicture -> CompactedPicture
-> removeFirstChar pic = (lineLength pic, [((getNum (firstElement pic)) - 1, getPicChar (firstElement pic))] ++ tail (picData pic))
+> removeFirstChar pic 
+>  | picData pic == [] = pic
+>  | getNum (firstElement pic) > 1 = (lineLength pic, [((getNum (firstElement pic)) - 1, getPicChar (firstElement pic))] ++ tail (picData pic))
+>  | otherwise = (lineLength pic, tail (picData pic))
+
+> firstChar :: CompactedPicture -> Char
+> firstChar pic = getPicChar (firstElement pic)
+
+> mergePictures :: CompactedPicture -> CompactedPicture -> CompactedPicture
+> mergePictures pic1 pic2 = (lineLength pic1, (picData pic1) ++ (picData pic2))
+
+> appendCompactedPictureToChar :: Char -> CompactedPicture -> CompactedPicture
+> appendCompactedPictureToChar char pic
+>  | picData pic == [] = (lineLength pic, [(1, char)])
+>  | char /= getPicChar (firstElement pic) = (lineLength pic, (1, char) : picData pic)
+>  | otherwise = (lineLength pic, ((getNum (firstElement pic)) + 1, getPicChar (firstElement pic)) : tail (picData pic))
 
 > expandCompactedPicture :: CompactedPicture -> Int -> String
 > expandCompactedPicture pic lineLeft
@@ -255,3 +273,12 @@ Then we need a print function for this representation
 >  | lineLeft == 0 = "\n" ++ expandCompactedPicture pic (lineLength pic)
 >  | getNum (firstElement pic) == 0 = expandCompactedPicture (lineLength pic, (tail (picData pic))) lineLeft
 >  | otherwise = getPicChar (firstElement pic) : expandCompactedPicture (removeFirstChar pic) (lineLeft-1)
+
+> superimposeCompactedPicture :: CompactedPicture -> CompactedPicture -> CompactedPicture
+> superimposeCompactedPicture pic1 pic2
+>  | picData pic1 == [] && picData pic2 == [] = (lineLength pic1, [])
+>  | picData pic1 == [] = (lineLength pic1, picData pic2)
+>  | picData pic2 == [] = (lineLength pic1, picData pic1)
+>  | otherwise = appendCompactedPictureToChar superimposedFirstChar (superimposeCompactedPicture (removeFirstChar pic1) (removeFirstChar pic2))
+>   where
+>    superimposedFirstChar = superimposeChar (firstChar pic1) (firstChar pic2)
