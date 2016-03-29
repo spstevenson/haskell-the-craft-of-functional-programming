@@ -93,13 +93,13 @@ horizontal mirror.
 > rotateLine col pic = reverse [ line !! col | line <- pic]
 
 > pictureWidth :: Picture -> Int
-> pictureWidth pic = length (pic !! 0)
+> pictureWidth pic = length (head pic)
 
 6.9 Using rotate90 or otherwise, define a function which rotates a
 picture through 90 degrees anticlockwise.
 
 > rotate270 :: Picture -> Picture
-> rotate270 pic = rotate90 (rotate90 (rotate90 pic))
+> rotate270 pic = (rotate90 . rotate90 . rotate90) pic
 
 6.10 [Harder] Define the function
 
