@@ -1,5 +1,10 @@
+> {-# LANGUAGE TemplateHaskell #-}
+
+> module PictureFunctions where
+
 > import Pictures hiding (superimpose, printPicture, prop_AboveFlipH)
 > import Test.QuickCheck
+> import Test.QuickCheck.All
 
 6.4 Define a function
 
@@ -181,3 +186,6 @@ in this case?
 >  (n `above` s) `beside` (n `above` s)
 
 In this case, it appears we do not need the condition.
+
+> return []
+> runTests = $(quickCheckAll)
